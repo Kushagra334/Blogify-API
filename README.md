@@ -47,7 +47,7 @@ Use the following credentials:
 
 ## API Endpoints
 
-(Details of API endpoints can be found in the Swagger UI)
+Interactive Swagger UI available at `http://localhost:8080/swagger-ui/index.html` to test and explore all endpoints.
 
 ## Security
 
