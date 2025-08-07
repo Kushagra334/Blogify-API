@@ -1,13 +1,11 @@
 package com.springboot.blog.payload;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import java.util.Set;
 
-@Data
 @Schema(
         description = "PostDto Model Information"
 )
@@ -44,4 +42,64 @@ public class PostDto {
             description = "Blog Post Category"
     )
     private Long categoryId;
+
+    public PostDto() {
+    }
+
+    public PostDto(long id, String title, String description, String content, Set<CommentDto> comments, Long categoryId) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.content = content;
+        this.comments = comments;
+        this.categoryId = categoryId;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Set<CommentDto> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<CommentDto> comments) {
+        this.comments = comments;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
 }
