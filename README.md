@@ -1,54 +1,140 @@
-# Blogify - RESTful Blog API
+📘 Blogify - RESTful Blog API
 
-Blogify is a powerful and flexible RESTful backend for a blog application, built with Spring Boot. This project provides a comprehensive set of APIs to manage posts, categories, and comments, along with robust security features.
+Blogify is a scalable and production-ready RESTful backend for a blogging application, built using Spring Boot.
+It provides robust CRUD APIs for posts, categories, comments, along with authentication, authorization, validation, and full MySQL integration.
 
-## Key Features
+🚀 Key Features
+✔ Spring Boot REST API
 
--   **RESTful Spring Boot Backend:** Developed using Spring Boot for rapid development and easy deployment.
--   **Swagger/OpenAPI Documentation:** Interactive API documentation available via Swagger UI, making it easy to understand and test the endpoints.
--   **Search Posts Feature:** Users can search for posts by keywords in the title (case-insensitive).
--   **H2 In-Memory Database:** Configured to use H2 in-memory database for quick setup and development. The database schema is auto-created on startup, and initial `ROLE_ADMIN` and `ROLE_USER` roles are inserted.
--   **Role-Based Authentication (JWT):** Secure your API with JSON Web Tokens (JWT) for authentication and role-based authorization.
--   **Ready for Deployment:** Designed with deployment in mind, making it suitable for cloud environments.
+Clean and modular backend with Controller-Service-Repository architecture.
 
-## Getting Started
+✔ MySQL Persistent Database (Production-ready)
 
-### Prerequisites
+The application now uses MySQL instead of H2.
+Tables auto-create on first run using JPA/Hibernate.
 
--   Java 17 or higher
--   Maven 3.x
+✔ Swagger / OpenAPI Documentation
 
-### Running the Application
+Test and explore APIs interactively at:
 
-To run the Blogify application, use the following Maven command:
+http://localhost:8080/swagger-ui/index.html
 
-```bash
+✔ JWT Authentication & Role-Based Authorization
+
+Login endpoint returns JWT
+
+Role-based access for admin/user
+
+Secure endpoints marked in Swagger
+
+✔ Search & Pagination
+
+Search posts by title (case-insensitive) and paginate results.
+
+✔ Exception Handling & Validation
+
+Custom global exception handler and DTO validation.
+
+✔ Modular & Deployment Ready
+
+Structured for easy deployment on AWS, Render, Railway, etc.
+
+📦 Tech Stack
+
+Java 17+
+
+Spring Boot 3.x
+
+Spring Security (JWT)
+
+Spring Data JPA
+
+MySQL 8+
+
+Lombok
+
+Swagger (springdoc-openapi)
+
+Maven
+
+🛠 Getting Started
+1️⃣ Prerequisites
+
+Java 17+
+
+Maven 3.x
+
+MySQL installed & running
+
+2️⃣ Database Setup
+
+Create the database:
+
+CREATE DATABASE blogify_api_qa;
+
+3️⃣ Update MySQL Credentials
+
+The main application.properties contains safe config:
+
+spring.datasource.url=jdbc:mysql://localhost:3306/blogify_api_qa?useSSL=false&serverTimezone=UTC
+spring.profiles.active=local
+
+
+Add your local credentials in:
+
+src/main/resources/application-local.properties  (GIT-IGNORED)
+
+
+Example:
+
+spring.datasource.username=root
+spring.datasource.password=YOUR_PASSWORD
+
+4️⃣ Run the Application
 mvn spring-boot:run
-```
 
-This will start the application with the H2 in-memory database.
+📘 API Documentation
 
-### Accessing Swagger UI
+Swagger UI:
 
-Once the application is running, you can access the interactive Swagger documentation at:
+http://localhost:8080/swagger-ui/index.html
 
-`http://localhost:8080/swagger-ui/index.html` (assuming your application runs on port 8080)
+🗄️ Database Schema
 
-### Accessing H2 Console
+MySQL tables are auto-generated via JPA:
 
-You can access the H2 console at:
+posts
 
-`http://localhost:8080/h2-console` (assuming your application runs on port 8080)
+categories
 
-Use the following credentials:
--   **JDBC URL:** `jdbc:h2:mem:testdb`
--   **Username:** `sa`
--   **Password:** (leave empty)
+comments
 
-## API Endpoints
+users
 
-Interactive Swagger UI available at `http://localhost:8080/swagger-ui/index.html` to test and explore all endpoints.
+roles
 
-## Security
+post-category-user relationships
 
-This application uses JWT for securing REST APIs. Refer to the Swagger UI for endpoints that require authentication.
+JWT-related authorization tables
+
+🔒 Security
+
+Blogify uses:
+
+JWT Authentication
+
+Role-based access (ROLE_ADMIN / ROLE_USER)
+
+Password hashing with BCrypt
+
+Secured endpoints marked in Swagger
+
+🧪 Testing
+
+Use Swagger UI or tools like:
+
+Postman
+
+Thunder Client
+
+cURL
