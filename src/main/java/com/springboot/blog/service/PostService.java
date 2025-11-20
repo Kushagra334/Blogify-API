@@ -1,14 +1,14 @@
 package com.springboot.blog.service;
 
 import com.springboot.blog.payload.PostDto;
-import com.springboot.blog.payload.PostResponse;
+import com.springboot.blog.payload.pagination.PageableResponse;
 
 import java.util.List;
 
 public interface PostService {
     PostDto createPost(PostDto postDto);
 
-    PostResponse getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir);
+    PageableResponse<PostDto> getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir, String search, String category, Long authorId);
 
     PostDto getPostById(long id);
 

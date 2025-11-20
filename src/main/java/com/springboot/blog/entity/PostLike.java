@@ -9,16 +9,14 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "comments")
-public class Comment {
+@Table(name = "post_likes", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"post_id", "user_id"})
+})
+public class PostLike {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String content;
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
@@ -29,4 +27,7 @@ public class Comment {
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
     private User user;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }

@@ -4,9 +4,11 @@ import com.springboot.blog.entity.Category;
 import com.springboot.blog.entity.Post;
 import com.springboot.blog.exception.ResourceNotFoundException;
 import com.springboot.blog.payload.PostDto;
-import com.springboot.blog.payload.PostResponse;
+import com.springboot.blog.payload.pagination.PageableResponse;
 import com.springboot.blog.repository.CategoryRepository;
 import com.springboot.blog.repository.PostRepository;
+import com.springboot.blog.repository.UserRepository;
+import com.springboot.blog.service.LikeService;
 import com.springboot.blog.service.PostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -27,11 +29,17 @@ public class PostServiceImpl implements PostService {
 
     private CategoryRepository categoryRepository;
 
+    private UserRepository userRepository;
+
+    private LikeService likeService;
+
     public PostServiceImpl(PostRepository postRepository, ModelMapper mapper,
-                           CategoryRepository categoryRepository) {
+                           CategoryRepository categoryRepository, UserRepository userRepository, LikeService likeService) {
           this.postRepository = postRepository;
           this.mapper = mapper;
           this.categoryRepository = categoryRepository;
+          this.userRepository = userRepository;
+          this.likeService = likeService;
     }
 
     @Override
@@ -51,28 +59,34 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponse getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir) {
+    public PageableResponse<PostDto> getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir, String search, String category, Long authorId) {
 
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
 
-        // create Pageable instance
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
 
-        Page<Post> posts = postRepository.findAll(pageable);
+        Page<Post> posts;
 
-        // get content for page object
-        List<Post> listOfPosts = posts.getContent();
+        if (search != null && !search.isEmpty()) {
+            posts = postRepository.findByTitleContainingIgnoreCase(search, pageable);
+        } else if (category != null && !category.isEmpty()) {
+            posts = postRepository.findByCategory_Name(category, pageable);
+        } else if (authorId != null) {
+            posts = postRepository.findByUser_Id(authorId, pageable);
+        } else {
+            posts = postRepository.findAll(pageable);
+        }
 
-        List<PostDto> content= listOfPosts.stream().map(post -> mapToDTO(post)).collect(Collectors.toList());
+        List<PostDto> content= posts.getContent().stream().map(post -> mapToDTO(post)).collect(Collectors.toList());
 
-        PostResponse postResponse = new PostResponse();
+        PageableResponse<PostDto> postResponse = new PageableResponse<>();
         postResponse.setContent(content);
-        postResponse.setPageNo(posts.getNumber());
+        postResponse.setPageNumber(posts.getNumber());
         postResponse.setPageSize(posts.getSize());
         postResponse.setTotalElements(posts.getTotalElements());
         postResponse.setTotalPages(posts.getTotalPages());
-        postResponse.setLast(posts.isLast());
+        postResponse.setLastPage(posts.isLast());
 
         return postResponse;
     }
@@ -120,28 +134,23 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostDto> searchPostsByTitle(String keyword) {
-        List<Post> posts = postRepository.findByTitleContainingIgnoreCase(keyword);
+        // This method will now be redundant or can be adapted to use pagination if needed
+        // For now, it will use the existing findByTitleContainingIgnoreCase from PostRepository, assuming it returns List if not Page
+        // If you need pagination here, you'll need to modify this method signature and implementation
+        List<Post> posts = postRepository.findByTitleContainingIgnoreCase(keyword, PageRequest.of(0, Integer.MAX_VALUE)).getContent(); // Temporarily fetch all for compatibility
         return posts.stream().map(this::mapToDTO).collect(Collectors.toList());
     }
 
     // convert Entity into DTO
     private PostDto mapToDTO(Post post){
         PostDto postDto = mapper.map(post, PostDto.class);
-//        PostDto postDto = new PostDto();
-//        postDto.setId(post.getId());
-//        postDto.setTitle(post.getTitle());
-//        postDto.setDescription(post.getDescription());
-//        postDto.setContent(post.getContent());
+        postDto.setLikesCount(likeService.getLikesCount(post.getId()));
         return postDto;
     }
 
     // convert DTO to entity
     private Post mapToEntity(PostDto postDto){
         Post post = mapper.map(postDto, Post.class);
-//        Post post = new Post();
-//        post.setTitle(postDto.getTitle());
-//        post.setDescription(postDto.getDescription());
-//        post.setContent(postDto.getContent());
         return post;
     }
 }

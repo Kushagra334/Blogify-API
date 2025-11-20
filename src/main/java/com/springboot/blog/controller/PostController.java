@@ -1,7 +1,7 @@
 package com.springboot.blog.controller;
 
 import com.springboot.blog.payload.PostDto;
-import com.springboot.blog.payload.PostResponse;
+import com.springboot.blog.payload.pagination.PageableResponse;
 import com.springboot.blog.service.PostService;
 import com.springboot.blog.utils.AppConstants;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,7 +49,7 @@ public class PostController {
 
     @Operation(
             summary = "Get All Posts REST API",
-            description = "Get All Posts REST API is used to fetch all the posts from the database"
+            description = "Get All Posts REST API is used to fetch all the posts from the database with pagination, sorting, and optional filtering by search keyword, category, or authorId."
     )
     @ApiResponse(
             responseCode = "200",
@@ -57,13 +57,16 @@ public class PostController {
     )
     // get all posts rest api
     @GetMapping
-    public PostResponse getAllPosts(
+    public PageableResponse<PostDto> getAllPosts(
             @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
             @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir,
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "category", required = false) String category,
+            @RequestParam(value = "authorId", required = false) Long authorId
     ){
-        return postService.getAllPosts(pageNo, pageSize, sortBy, sortDir);
+        return postService.getAllPosts(pageNo, pageSize, sortBy, sortDir, search, category, authorId);
     }
 
     @Operation(
@@ -124,6 +127,8 @@ public class PostController {
 
     // Build Get Posts by Category REST API
     // http://localhost:8080/api/posts/category/3
+    @Operation(summary = "Get Posts by Category",
+            description = "Retrieves a list of posts filtered by category ID.")
     @GetMapping("/category/{id}")
     public ResponseEntity<List<PostDto>> getPostsByCategory(@PathVariable("id") Long categoryId){
         List<PostDto> postDtos = postService.getPostsByCategory(categoryId);
@@ -132,6 +137,8 @@ public class PostController {
 
     // Build Get Posts by Search Keyword REST API
     // http://localhost:8080/api/posts/search?keyword=java
+    @Operation(summary = "Search Posts by Keyword",
+            description = "Retrieves a list of posts filtered by a search keyword in their title.")
     @GetMapping("/search")
     public ResponseEntity<List<PostDto>> searchPostsByKeyword(@RequestParam(value = "keyword") String keyword){
         List<PostDto> postDtos = postService.searchPostsByTitle(keyword);

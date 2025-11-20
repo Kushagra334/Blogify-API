@@ -43,16 +43,19 @@ public class PostDto {
     )
     private Long categoryId;
 
+    private long likesCount;
+
     public PostDto() {
     }
 
-    public PostDto(long id, String title, String description, String content, Set<CommentDto> comments, Long categoryId) {
+    public PostDto(long id, String title, String description, String content, Set<CommentDto> comments, Long categoryId, long likesCount) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.content = content;
         this.comments = comments;
         this.categoryId = categoryId;
+        this.likesCount = likesCount;
     }
 
     public long getId() {
@@ -101,5 +104,13 @@ public class PostDto {
 
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public long getLikesCount() {
+        return likesCount;
+    }
+
+    public void setLikesCount(long likesCount) {
+        this.likesCount = likesCount;
     }
 }
