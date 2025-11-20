@@ -2,7 +2,6 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Spring_Boot-3.x-brightgreen?style=flat-square" alt="Spring Boot"/>
   <img src="https://img.shields.io/badge/Java-17%2B-blue?style=flat-square" alt="Java"/>
-  <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square"/>
   <img src="https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square"/>
 </p>
 
@@ -120,7 +119,3 @@ Use:
 PRs and issues welcome! Please check the [issues](../../issues) page.
 
 ---
-
-## 📄 License
-
-MIT – see [LICENSE](LICENSE).
