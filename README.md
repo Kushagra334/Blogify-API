@@ -1,140 +1,126 @@
-📘 Blogify - RESTful Blog API
+<!-- PROJECT LOGO & BADGES -->
+<p align="center">
+  <img src="https://img.shields.io/badge/Spring_Boot-3.x-brightgreen?style=flat-square" alt="Spring Boot"/>
+  <img src="https://img.shields.io/badge/Java-17%2B-blue?style=flat-square" alt="Java"/>
+  <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square"/>
+  <img src="https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square"/>
+</p>
 
-Blogify is a scalable and production-ready RESTful backend for a blogging application, built using Spring Boot.
-It provides robust CRUD APIs for posts, categories, comments, along with authentication, authorization, validation, and full MySQL integration.
+<h1 align="center">📘 Blogify API</h1>
+<p align="center">
+  <b>Production-grade RESTful backend for modern blogging, built with Spring Boot.</b><br>
+  Seamless CRUD, authentication, validation, and ready for scalable deployment.
+</p>
 
-🚀 Key Features
-✔ Spring Boot REST API
+---
 
-Clean and modular backend with Controller-Service-Repository architecture.
+## 🚀 Features
 
-✔ MySQL Persistent Database (Production-ready)
+- **Modular Architecture:** Controller ➜ Service ➜ Repository for clean code.
+- **MySQL Database (production-ready):** JPA/Hibernate auto-creates tables.
+- **OpenAPI/Swagger Docs:** Instant API exploration @ [`/swagger-ui/index.html`](http://localhost:8080/swagger-ui/index.html)
+- **JWT Authentication:** Secure endpoints, login returns JWT, RBAC (admin/user).
+- **Search & Pagination:** Efficient queries by title and page.
+- **Validation & Exception Handling:** Robust DTO checks and global handlers.
+- **Deployment Ready:** Easily deploy on AWS, Render, Railway, & more.
 
-The application now uses MySQL instead of H2.
-Tables auto-create on first run using JPA/Hibernate.
+---
 
-✔ Swagger / OpenAPI Documentation
+## 📦 Tech Stack
 
-Test and explore APIs interactively at:
+| Framework | Version  | Notes                      |
+|-----------|----------|----------------------------|
+| Java      | 17+      |                            |
+| Spring Boot| 3.x     | + Spring Security (JWT)    |
+| Spring Data JPA | —  |                            |
+| MySQL     | 8+       | Integration                |
+| Lombok    | —        | Boilerplate free           |
+| Swagger   | springdoc-openapi | API Docs         |
+| Maven     | —        | Build/Dependency Management|
 
-http://localhost:8080/swagger-ui/index.html
 
-✔ JWT Authentication & Role-Based Authorization
+---
 
-Login endpoint returns JWT
+## 🛠 Getting Started
 
-Role-based access for admin/user
+### 1️⃣ Prerequisites
 
-Secure endpoints marked in Swagger
+- Java 17+
+- Maven 3.x
+- MySQL running locally
 
-✔ Search & Pagination
+### 2️⃣ Database Setup
 
-Search posts by title (case-insensitive) and paginate results.
-
-✔ Exception Handling & Validation
-
-Custom global exception handler and DTO validation.
-
-✔ Modular & Deployment Ready
-
-Structured for easy deployment on AWS, Render, Railway, etc.
-
-📦 Tech Stack
-
-Java 17+
-
-Spring Boot 3.x
-
-Spring Security (JWT)
-
-Spring Data JPA
-
-MySQL 8+
-
-Lombok
-
-Swagger (springdoc-openapi)
-
-Maven
-
-🛠 Getting Started
-1️⃣ Prerequisites
-
-Java 17+
-
-Maven 3.x
-
-MySQL installed & running
-
-2️⃣ Database Setup
-
-Create the database:
-
+```
+sql
 CREATE DATABASE blogify_api_qa;
+```
 
-3️⃣ Update MySQL Credentials
+### 3️⃣ Update MySQL Credentials
 
-The main application.properties contains safe config:
+**Edit** `src/main/resources/application-local.properties` *(GIT-IGNORED)*
 
+```
+properties
 spring.datasource.url=jdbc:mysql://localhost:3306/blogify_api_qa?useSSL=false&serverTimezone=UTC
-spring.profiles.active=local
-
-
-Add your local credentials in:
-
-src/main/resources/application-local.properties  (GIT-IGNORED)
-
-
-Example:
-
 spring.datasource.username=root
 spring.datasource.password=YOUR_PASSWORD
+spring.profiles.active=local
+```
 
-4️⃣ Run the Application
+### 4️⃣ Run the Application
+
+```
+shell
 mvn spring-boot:run
+```
 
-📘 API Documentation
+---
 
-Swagger UI:
+## 📘 API Documentation
 
-http://localhost:8080/swagger-ui/index.html
+Interactive Swagger UI:<br>
+🔗 [`http://localhost:8080/swagger-ui/index.html`](http://localhost:8080/swagger-ui/index.html)
 
-🗄️ Database Schema
+---
 
-MySQL tables are auto-generated via JPA:
+## 🗄️ Database Schema
 
-posts
+Tables auto-generated via JPA:
 
-categories
-
-comments
-
-users
-
-roles
-
-post-category-user relationships
-
+```
+posts        categories      comments
+users        roles           post-category-user relationships
 JWT-related authorization tables
+```
 
-🔒 Security
+---
 
-Blogify uses:
+## 🔒 Security
 
-JWT Authentication
+- JWT Authentication (stateless sessions)
+- Role-based access: `ROLE_ADMIN`, `ROLE_USER`
+- Passwords hashed with BCrypt
+- Swagger marks protected endpoints
 
-Role-based access (ROLE_ADMIN / ROLE_USER)
+---
 
-Password hashing with BCrypt
+## 🧪 Testing
 
-Secured endpoints marked in Swagger
+Use:
+- Swagger UI
+- Postman
+- Thunder Client
+- cURL
 
-🧪 Testing
+---
 
-Use Swagger UI or tools like:
+## 🤝 Contributions
 
-Postman
+PRs and issues welcome! Please check the [issues](../../issues) page.
 
-Thunder Client
+---
 
-cURL
+## 📄 License
+
+MIT – see [LICENSE](LICENSE).
